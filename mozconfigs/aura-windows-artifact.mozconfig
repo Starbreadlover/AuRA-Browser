@@ -1,0 +1,17 @@
+# AuRA Browser Windows artifact build.
+# Use for fast UI, JS, CSS, and branding iteration.
+# A full build is required for C++ changes such as registering about:aura.
+
+mk_add_options MOZ_OBJDIR=@TOPSRCDIR@/obj-aura-artifact
+
+ac_add_options --enable-application=browser
+ac_add_options --with-branding=browser/branding/aura
+ac_add_options --with-distribution-id=io.aura
+ac_add_options --enable-artifact-builds
+ac_add_options --enable-optimize
+ac_add_options --disable-debug
+ac_add_options --disable-tests
+
+# Optional for private internal builds only. Public builds need a secure update story.
+# ac_add_options --disable-updater
+# ac_add_options --disable-crashreporter

@@ -1,0 +1,7 @@
+!define BrandShortName        "AuRA Browser"
+!define BrandFullName         "AuRA Browser"
+!define BrandFullNameInternal "AuRA Browser"
+!define CompanyName           "AuRA"
+!define URLInfoAbout          "https://example.invalid/aura-browser"
+!define URLUpdateInfo         "https://example.invalid/aura-browser/releases"
+!define HelpLink              "https://example.invalid/aura-browser/support"

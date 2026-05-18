@@ -1,0 +1,14 @@
+# AuRA Browser macOS full build.
+# Use this for release candidates and changes touching C++ or packaging internals.
+
+mk_add_options MOZ_OBJDIR=@TOPSRCDIR@/obj-aura-macos-release
+
+ac_add_options --enable-application=browser
+ac_add_options --with-branding=browser/branding/aura
+ac_add_options --with-distribution-id=io.aura
+ac_add_options --enable-optimize
+ac_add_options --disable-debug
+ac_add_options --disable-tests
+
+# Keep update support enabled until AuRA has its own signed update infrastructure.
+# Public macOS builds also need Developer ID signing and notarization.

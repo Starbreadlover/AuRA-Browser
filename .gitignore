@@ -1,0 +1,9 @@
+/mozilla-unified/
+/mozilla-central/
+obj-*/
+dist/
+*.log
+*.tmp
+.mozconfig.local
+.DS_Store
+What to change/
