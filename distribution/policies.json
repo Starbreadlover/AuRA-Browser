@@ -13,6 +13,46 @@
       "Snippets": false,
       "TopSites": true
     },
-    "SearchSuggestEnabled": false
+    "SearchSuggestEnabled": false,
+    "SearchEngines": {
+      "Add": [
+        {
+          "Name": "Startpage",
+          "URLTemplate": "https://www.startpage.com/sp/search?query={searchTerms}",
+          "Method": "GET",
+          "IconURL": "https://www.startpage.com/favicon.ico",
+          "Alias": "sp",
+          "Description": "Startpage private search"
+        }
+      ],
+      "Default": "DuckDuckGo",
+      "PreventInstalls": true,
+      "Remove": [
+        "Google",
+        "Bing",
+        "Amazon",
+        "Amazon.com",
+        "Amazon.co.uk",
+        "Amazon.de",
+        "Amazon.es",
+        "Amazon.fr",
+        "Amazon.it",
+        "Baidu",
+        "Daum",
+        "eBay",
+        "Ecosia",
+        "MercadoLibre",
+        "Naver",
+        "Qwant",
+        "Rakuten",
+        "Seznam",
+        "Twitter",
+        "Wikipedia",
+        "Wikipedia (en)",
+        "Yahoo",
+        "Yahoo! JAPAN",
+        "Yandex"
+      ]
+    }
   }
 }

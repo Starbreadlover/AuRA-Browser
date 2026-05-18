@@ -50,4 +50,6 @@ Avoid defaulting these unless you are willing to own compatibility fallout:
 
 The example `distribution/policies.json` is useful for packaged test builds and managed installs. The macOS preparation/build scripts copy it into the Firefox source tree and then into the built `.app` under `Contents/Resources/distribution/policies.json`. It is not a substitute for source-level defaults, but it helps validate the privacy posture of developer builds.
 
+The policy restricts built-in search defaults to DuckDuckGo and Startpage only. DuckDuckGo is the default, Startpage is added as the alternate provider, search suggestions stay disabled, and webpage-installed search engines are blocked.
+
 Reference: https://mozilla.github.io/policy-templates/

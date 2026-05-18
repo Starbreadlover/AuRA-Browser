@@ -92,6 +92,12 @@ For incremental front-end changes:
 ./mach run
 ```
 
+The helper script also copies `distribution/policies.json` into the Firefox checkout before building, which keeps packaged search defaults restricted to DuckDuckGo and Startpage:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File ".\scripts\build-windows.ps1" -FirefoxSource "C:\mozilla-source\firefox" -Config release
+```
+
 ## 7. Smoke Tests
 
 Before distributing any build, verify:
@@ -103,6 +109,7 @@ Before distributing any build, verify:
 - Signed extensions from addons.mozilla.org install and run.
 - Private windows work.
 - Bookmarks, history, downloads, password manager, search settings, and theme switching work.
+- Only DuckDuckGo and Startpage are available as search providers.
 - Telemetry, studies, and sponsored suggestion defaults are disabled.
 - Safe Browsing, certificate checks, and add-on blocklists still work.
 

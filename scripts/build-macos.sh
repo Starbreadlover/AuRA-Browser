@@ -22,6 +22,7 @@ shift
 config=release
 run_after=false
 package_after=false
+release_dmg_name="AuraV0.1.1.dmg"
 
 if [ "${1:-}" = "release" ] || [ "${1:-}" = "artifact" ]; then
   config=$1
@@ -69,26 +70,57 @@ if [ ! -f "$mach_path" ]; then
   exit 1
 fi
 
+install_policies_into_apps() {
+  local installed=false
+  local app
+  local dist_bin
+
+  for dist_bin in "$firefox_source"/obj-*/dist/bin; do
+    if [ ! -d "$dist_bin" ]; then
+      continue
+    fi
+
+    mkdir -p "$dist_bin/distribution"
+    cp "$repo_root/distribution/policies.json" "$dist_bin/distribution/policies.json"
+    echo "Installed policies.json into $dist_bin/distribution"
+    installed=true
+  done
+
+  for app in "$firefox_source"/obj-*/dist/*.app "$firefox_source"/obj-*/dist/*/"AuRA Browser.app"; do
+    if [ ! -d "$app/Contents/Resources" ]; then
+      continue
+    fi
+
+    mkdir -p "$app/Contents/Resources/distribution"
+    cp "$repo_root/distribution/policies.json" "$app/Contents/Resources/distribution/policies.json"
+    echo "Installed policies.json into $app"
+    installed=true
+  done
+
+  if [ "$installed" = false ]; then
+    echo "Could not find built AuRA Browser.app under obj-*/dist yet; policies are still present in source distribution/."
+  fi
+}
+
 cp "$mozconfig_source" "$mozconfig_target"
 echo "Copied $mozconfig_name to $mozconfig_target"
 
 cd "$firefox_source"
 ./mach build
 
-latest_app=$(ls -td "$firefox_source"/obj-*/dist/*.app 2>/dev/null | head -n 1 || true)
-if [ -n "$latest_app" ]; then
-  mkdir -p "$latest_app/Contents/Resources/distribution"
-  cp "$repo_root/distribution/policies.json" "$latest_app/Contents/Resources/distribution/policies.json"
-  echo "Installed policies.json into $latest_app"
-else
-  echo "Could not find built .app under obj-*/dist yet; policies are still present in source distribution/."
-fi
+install_policies_into_apps
 
 if [ "$package_after" = true ]; then
   ./mach package
+  latest_dmg=$(ls -t "$firefox_source"/obj-*/dist/*.dmg 2>/dev/null | head -n 1 || true)
+  if [ -n "$latest_dmg" ]; then
+    release_dmg="$(dirname "$latest_dmg")/$release_dmg_name"
+    cp "$latest_dmg" "$release_dmg"
+    echo "Named release DMG: $release_dmg"
+  fi
   echo
   echo "Package output should be under:"
-  echo "  $firefox_source/obj-*/dist/*.dmg"
+  echo "  $firefox_source/obj-*/dist/$release_dmg_name"
 fi
 
 if [ "$run_after" = true ]; then

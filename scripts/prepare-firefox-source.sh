@@ -189,6 +189,30 @@ if "'aura'," not in components_text and '"aura",' not in components_text:
 else:
     print("Already current browser/components/about/components.conf")
 
+package_manifest = root / "browser/installer/package-manifest.in"
+package_manifest_text = read(package_manifest)
+distribution_start = "; >>> AuRA Browser distribution policies\n"
+distribution_end = "; <<< AuRA Browser distribution policies"
+distribution_block = distribution_start + "@RESPATH@/distribution/*\n" + distribution_end
+if distribution_start in package_manifest_text:
+    package_manifest_text = re.sub(
+        re.escape(distribution_start) + r".*?" + re.escape(distribution_end),
+        distribution_block,
+        package_manifest_text,
+        flags=re.DOTALL,
+    )
+else:
+    existing_distribution_block = "#if defined(BUILT_BY_MOZILLA)\n@RESPATH@/distribution/*"
+    if existing_distribution_block in package_manifest_text:
+        package_manifest_text = package_manifest_text.replace(
+            existing_distribution_block,
+            distribution_block + "\n\n" + existing_distribution_block,
+            1,
+        )
+    else:
+        package_manifest_text = package_manifest_text.rstrip() + "\n\n" + distribution_block + "\n"
+write_if_changed(package_manifest, package_manifest_text)
+
 firefox_js = root / "browser/app/profile/firefox.js"
 aura_prefs = read(repo / "overlays/mozilla-central/browser/app/profile/aura.js").strip()
 start = "// >>> AuRA Browser defaults\n"
