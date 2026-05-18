@@ -27,17 +27,34 @@ Windows support files are included for development builds, but the public beta i
 
 ## Install The Beta On macOS
 
-1. Go to the GitHub Releases page for this repository.
+[![Install AuRA Browser on macOS](https://img.shields.io/badge/Install%20AuRA%20Browser-macOS-blue?style=for-the-badge&logo=apple)](https://github.com/Starbreadlover/AuRA-Browser/releases/latest)
+
+**One-command install** — paste this into Terminal and press Return:
+
+```bash
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Starbreadlover/AuRA-Browser/main/scripts/install-macos.sh)"
+```
+
+The script will:
+1. Fetch the latest release from GitHub automatically.
+2. Download the `.dmg` to a temporary folder.
+3. Mount it, copy `AuRA Browser.app` to `/Applications`, and clean up.
+
+After install, right-click `AuRA Browser` in Applications and choose **Open** on first launch — macOS may show a security prompt for beta builds that are not yet notarized.
+
+To update to a newer beta, just run the same command again — it will replace the existing installation.
+
+<details>
+<summary>Manual install (without Terminal)</summary>
+
+1. Go to the [GitHub Releases page](https://github.com/Starbreadlover/AuRA-Browser/releases/latest).
 2. Download the latest macOS beta `.dmg` file.
 3. Open the downloaded `.dmg`.
 4. Drag `AuRA Browser.app` into your `Applications` folder.
-5. Open `Applications`.
-6. Control-click or right-click `AuRA Browser.app`, then choose `Open`.
-7. Confirm the macOS security prompt if it appears.
+5. Control-click or right-click `AuRA Browser.app`, then choose `Open`.
+6. Confirm the macOS security prompt if it appears.
 
-macOS may show a warning because beta builds may not be notarized yet. Use the right-click `Open` flow the first time instead of double-clicking.
-
-To install a newer beta, quit AuRA Browser, download the newer `.dmg`, and replace the existing app in `Applications`.
+</details>
 
 ## Add-ons
 
