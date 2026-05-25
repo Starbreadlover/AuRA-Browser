@@ -1,0 +1,23 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Security-Policy" content="default-src chrome:; img-src chrome:; style-src chrome:; script-src chrome:; object-src 'none'; base-uri 'none';">
+    <title>AuRA Start</title>
+    <link rel="stylesheet" href="chrome://browser/content/auraStart.css">
+    <script defer src="chrome://browser/content/auraStart.js"></script>
+  </head>
+  <body>
+    <main class="startpage" aria-label="AuRA Start">
+      <div class="logo-frame" aria-hidden="true">
+        <img src="chrome://browser/content/auraStartpageLogo.png" alt="">
+      </div>
+      <form id="search-form" class="search" role="search">
+        <input id="search-input" type="search" autocomplete="off" spellcheck="false" autofocus>
+        <button class="search-button" type="submit" aria-label="Search">
+          <span class="search-icon" aria-hidden="true"></span>
+        </button>
+      </form>
+    </main>
+  </body>
+</html>

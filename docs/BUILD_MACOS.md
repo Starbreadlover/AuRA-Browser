@@ -104,7 +104,7 @@ cd "/Users/shrod/projects/AuRA Browser"
 The resulting package should be under:
 
 ```text
-~/mozilla-source/firefox/obj-*/dist/AuraV0.1.1.dmg
+~/mozilla-source/firefox/obj-*/dist/AuraV0.2.0.dmg
 ```
 
 ## 5. Artifact Builds Later
@@ -132,7 +132,7 @@ From the Firefox source directory:
 ./mach package
 ```
 
-Packaged macOS builds are emitted under `obj-*/dist/AuraV0.1.1.dmg`. Use the packaged `.dmg` to test on another Mac because the raw development `.app` can contain symlinks to the build tree.
+Packaged macOS builds are emitted under `obj-*/dist/AuraV0.2.0.dmg`. Use the packaged `.dmg` to test on another Mac because the raw development `.app` can contain symlinks to the build tree.
 
 ## 8. Signing And Notarization
 

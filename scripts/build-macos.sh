@@ -22,7 +22,7 @@ shift
 config=release
 run_after=false
 package_after=false
-release_dmg_name="AuraV0.1.1.dmg"
+release_dmg_name="AuraV0.2.0.dmg"
 
 if [ "${1:-}" = "release" ] || [ "${1:-}" = "artifact" ]; then
   config=$1
@@ -114,9 +114,14 @@ if [ "$package_after" = true ]; then
   ./mach package
   latest_dmg=$(ls -t "$firefox_source"/obj-*/dist/*.dmg 2>/dev/null | head -n 1 || true)
   if [ -n "$latest_dmg" ]; then
-    release_dmg="$(dirname "$latest_dmg")/$release_dmg_name"
+    dist_dir="$(dirname "$latest_dmg")"
+    release_dmg="$dist_dir/$release_dmg_name"
+    all_versions_dir="$dist_dir/All Versions"
     cp "$latest_dmg" "$release_dmg"
     echo "Named release DMG: $release_dmg"
+    mkdir -p "$all_versions_dir"
+    cp "$release_dmg" "$all_versions_dir/$release_dmg_name"
+    echo "Archived release DMG: $all_versions_dir/$release_dmg_name"
   fi
   echo
   echo "Package output should be under:"

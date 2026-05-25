@@ -81,7 +81,8 @@ def write_if_changed(path, text):
 
 def ensure_line_after_match(path, match_re, new_lines):
     text = read(path)
-    if all(line in text for line in new_lines):
+    missing_lines = [line for line in new_lines if line not in text]
+    if not missing_lines:
         print(f"Already current {path.relative_to(root)}")
         return
 
@@ -95,7 +96,7 @@ def ensure_line_after_match(path, match_re, new_lines):
     if insert_at is None:
         fail(f"could not find insertion point in {path}")
 
-    lines[insert_at:insert_at] = [line + "\n" for line in new_lines]
+    lines[insert_at:insert_at] = [line + "\n" for line in missing_lines]
     write_if_changed(path, "".join(lines))
 
 confvars = root / "browser/confvars.sh"
@@ -152,6 +153,11 @@ ensure_line_after_match(
     [
         "        content/browser/aboutAura.html                (content/aboutAura.html)",
         "        content/browser/aboutAura.css                 (content/aboutAura.css)",
+        "        content/browser/auraStart.html                (content/auraStart.html)",
+        "        content/browser/auraStart.css                 (content/auraStart.css)",
+        "        content/browser/auraStart.js                  (content/auraStart.js)",
+        "        content/browser/auraStartpageBG.png           (content/auraStartpageBG.png)",
+        "        content/browser/auraStartpageLogo.png         (content/auraStartpageLogo.png)",
     ],
 )
 
@@ -175,19 +181,55 @@ if '{"aura",' not in redirector_text:
 else:
     print("Already current browser/components/about/AboutRedirector.cpp")
 
-components = root / "browser/components/about/components.conf"
-components_text = read(components)
-if "'aura'," not in components_text and '"aura",' not in components_text:
-    components_text = components_text.replace(
-        "pages = [\n",
-        "pages = [\n    'aura',\n",
+if '{"aurastart",' not in redirector_text:
+    aura_start_entry = (
+        '  {"aurastart", "chrome://browser/content/auraStart.html",\n'
+        '   nsIAboutModule::ALLOW_SCRIPT |\n'
+        '       nsIAboutModule::IS_SECURE_CHROME_UI},\n'
+    )
+    redirector_text = redirector_text.replace(
+        "static const RedirEntry kRedirMap[] = {\n",
+        "static const RedirEntry kRedirMap[] = {\n" + aura_start_entry,
         1,
     )
-    if "'aura'," not in components_text:
-        fail("could not register about:aura in browser/components/about/components.conf")
+    if '{"aurastart",' not in redirector_text:
+        fail("could not register about:aurastart in browser/components/about/AboutRedirector.cpp")
+    write_if_changed(redirector, redirector_text)
+else:
+    print("Already current browser/components/about/AboutRedirector.cpp")
+
+components = root / "browser/components/about/components.conf"
+components_text = read(components)
+missing_about_pages = [
+    page
+    for page in ["aura", "aurastart"]
+    if f"'{page}'," not in components_text and f'"{page}",' not in components_text
+]
+if missing_about_pages:
+    about_page_lines = "".join(f"    '{page}',\n" for page in missing_about_pages)
+    components_text = components_text.replace(
+        "pages = [\n",
+        "pages = [\n" + about_page_lines,
+        1,
+    )
+    for page in missing_about_pages:
+        if f"'{page}'," not in components_text:
+            fail(f"could not register about:{page} in browser/components/about/components.conf")
     write_if_changed(components, components_text)
 else:
     print("Already current browser/components/about/components.conf")
+
+about_new_tab = root / "browser/modules/AboutNewTab.sys.mjs"
+about_new_tab_text = read(about_new_tab)
+about_new_tab_text = re.sub(
+    r'^const ABOUT_URL = "about:(?:newtab|aurastart)";$',
+    'const ABOUT_URL = "about:aurastart";',
+    about_new_tab_text,
+    flags=re.MULTILINE,
+)
+if 'const ABOUT_URL = "about:aurastart";' not in about_new_tab_text:
+    fail("could not set AuRA start page as the default new tab URL in browser/modules/AboutNewTab.sys.mjs")
+write_if_changed(about_new_tab, about_new_tab_text)
 
 package_manifest = root / "browser/installer/package-manifest.in"
 package_manifest_text = read(package_manifest)

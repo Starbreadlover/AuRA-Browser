@@ -45,6 +45,8 @@ pref("dom.security.https_only_mode_pbm", true);
 
 // Reduce startup interruptions.
 pref("browser.shell.checkDefaultBrowser", false);
+pref("browser.startup.page", 1);
+pref("browser.startup.homepage", "about:aurastart");
 pref("browser.startup.homepage_override.mstone", "ignore");
 
 // Preserve extension compatibility.

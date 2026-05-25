@@ -13,6 +13,11 @@
       "Snippets": false,
       "TopSites": true
     },
+    "Homepage": {
+      "URL": "about:aurastart",
+      "Locked": false,
+      "StartPage": "homepage"
+    },
     "SearchSuggestEnabled": false,
     "SearchEngines": {
       "Add": [
